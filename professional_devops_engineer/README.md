@@ -901,3 +901,594 @@ customers. What should you do?
      - D. Deploy the application by using kubectl and set the spec.updateStrategy.type field to RollingUpdate. Use Cloud Monitoring to look for performance issues,and run the kubectl rollback command if there are any issues.
 
     **A**. Canary deployments allow you to release to a subset of users gradually, and supported by cloud monitoring metrics. B is too risky as you have not load test it. C and D are not automated.
+
+101. You are managing an application that runs in Compute Engine. The application uses a custom HTTP server to expose an API that is accessed by other applications through an internal TCP/UDP load balancer. A firewall rule allows access to the API port from 0.0.0.0/0. You need to configure Cloud Logging to log each IP address that accesses the API by using the fewest number of steps. What should you do first?
+     - A. Enable Packet Mirroring on the VPC.
+     - B. Install the Ops Agent on the Compute Engine instances.
+     - C. Enable logging on the firewall rule.
+     - D. Enable VPC Flow Logs on the subnet.
+
+102. Your company runs an ecommerce website built with JVM-based applications and microservice architecture in Google Kubernetes Engine (GKE). The application load increases during the day and decreases during the night. Your operations team has configured the application to run enough Pods to handle the evening peak load. You want to automate scaling by only running enough Pods and nodes for the load. What should you do?
+     - A. Configure the Vertical Pod Autoscaler, but keep the node pool size static.
+     - B. Configure the Vertical Pod Autoscaler, and enable the cluster autoscaler.
+     - C. Configure the Horizontal Pod Autoscaler, but keep the node pool size static.
+     - D. Configure the Horizontal Pod Autoscaler, and enable the cluster autoscaler.
+
+    **D**. Horizontal scaler add or remove pods which is what we want. We do not need stronger computing power. Because it also want to run only enough nodes for the load, cluster autoscaler is also enabled to autoscale the node pool
+
+103. Your organization wants to increase the availability target of an application from 99.9% to 99.99% for an investment of $2,000. The application's current revenue is $1,000,000. You need to determine whether the increase in availability is worth the investment for a single year of usage. What should you do?
+     - A. Calculate the value of improved availability to be $900, and determine that the increase in availability is not worth the investment.
+     - B. Calculate the value of improved availability to be $1,000, and determine that the increase in availability is not worth the investment.
+     - C. Calculate the value of improved availability to be $1,000, and determine that the increase in availability is worth the investment.
+     - D. Calculate the value of improved availability to be $9,000, and determine that the increase in availability is worth the investment.
+
+    **A**. increase 0.09% availability will bring in total of 1000000 x 0.09% = 900 revenue. This is lower than the investment of 2000 therefore not worth it.
+
+104. A third-party application needs to have a service account key to work properly. When you try to export the key from your cloud project, you receive an error: “The organization policy constraint iam.disableServiceAccounKeyCreation is enforced.” You need to make the third-party application work while following Google-recommended security practices. What should you do?
+     - A. Enable the default service account key, and download the key.
+     - B. Remove the iam.disableServiceAccountKeyCreation policy at the organization level, and create a key.
+     - C. Disable the service account key creation policy at the project's folder, and download the default key.
+     - D. Add a rule to set the iam.disableServiceAccountKeyCreation policy to off in your project, and create a key.
+
+    **D**. You do not want to change the organizational policy just for one project. Instead org policy can be overwrite in the decendant resource. So set it to overwrite in the project level. https://cloud.google.com/resource-manager/docs/organization-policy/overview#:~:text=You%20can%20set%20an%20organization,the%20rules%20of%20hierarchy%20evaluation.
+
+105. Your team is writing a postmortem after an incident on your external facing application. Your team wants to improve the postmortem policy to include triggers that indicate whether an incident requires a postmortem. Based on Site Reliability Engineering (SRE) practices, what triggers should be defined in the postmortem policy? (Choose two.)
+     - A. An external stakeholder asks for a postmortem
+     - B. Data is lost due to an incident.
+     - C. An internal stakeholder requests a postmortem.
+     - D. The monitoring system detects that one of the instances for your application has failed.
+     - E. The CD pipeline detects an issue and rolls back a problematic release.
+
+    **AB**. Data Loss of any kind is suggested to have a postmorten. When external stakeholder request one, usually indicate they are affected, which indicate a user-affected downtime. Plus, "Any stakeholder may request one". While E mentioned a rolls back, it is roll back by the CICD Pipeline. rollback is worth a postmortem ONLY if On-call engineer intervention. In this case, it is a normal CICD actions which actually indicate CICD set up properly.
+
+106. You are implementing a CI/CD pipeline for your application in your company’s multi-cloud environment. Your application is deployed by using custom Compute Engine images and the equivalent in other cloud providers. You need to implement a solution that will enable you to build and deploy the images to your current environment and is adaptable to future changes. Which solution stack should you use?
+     - A. Cloud Build with Packer
+     - B. Cloud Build with Google Cloud Deploy
+     - C. Google Kubernetes Engine with Google Cloud Deploy
+     - D. Cloud Build with kpt
+
+    **A**. Cloud build is a script runner primary for building, but can also have script for deploying. Packer is a tool to create **identical VM for multiple platform**. This two make it perfect to handler multi-cloud environment. B is wrong because Cloud Deploy do not work outside of GCP. https://cloud.google.com/build/docs/building/build-vm-images-with-packer
+
+107. Your application's performance in Google Cloud has degraded since the last release. You suspect that downstream dependencies might be causing some requests to take longer to complete. You need to investigate the issue with your application to determine the cause. What should you do?
+     - A. Configure Error Reporting in your application.
+     - B. Configure Google Cloud Managed Service for Prometheus in your application.
+     - C. Configure Cloud Profiler in your application.
+     - D. Configure Cloud Trace in your application.
+
+    **D**. Keyword is "downstream" and "latency". These two indicate cloud trace. Which trace the request flow and find the bottle neck.
+
+108. You are creating a CI/CD pipeline in Cloud Build to build an application container image. The application code is stored in GitHub. Your company requires that production image builds are only run against the main branch and that the change control team approves all pushes to the main branch. You want the image build to be as automated as possible. What should you do? (Choose two.)
+     - A. Create a trigger on the Cloud Build job. Set the repository event setting to ‘Pull request’.
+     - B. Add the OWNERS file to the Included files filter on the trigger.
+     - C. Create a trigger on the Cloud Build job. Set the repository event setting to ‘Push to a branch’
+     - D. Configure a branch protection rule for the main branch on the repository.
+     - E. Enable the Approval option on the trigger.
+
+    **CD**. Cloud build support trigger event. In this case when code get merged, cloud build trigger. This means "Push to branch". Plus set the branch protection so "push to branch" only be done via merge request. 
+
+109. You built a serverless application by using Cloud Run and deployed the application to your production environment. You want to identify the resource utilization of the application for cost optimization. What should you do?
+     - A. Use Cloud Trace with distributed tracing to monitor the resource utilization of the application.
+     - B. Use Cloud Profiler with Ops Agent to monitor the CPU and memory utilization of the application.
+     - C. Use Cloud Monitoring to monitor the container CPU and memory utilization of the application.
+     - D. Use Cloud Ops to create logs-based metrics to monitor the resource utilization of the application.
+
+    **C**. Cloud run integrated with cloud monitoring by default. Cloud Monitoring is like a security camera that look at high level resource utilization. Cloud Profiler is to check the performance bottleneck at *code level*.
+
+110. Your company is using HTTPS requests to trigger a public Cloud Run-hosted service accessible at the https://booking-engine-abcdef.a.run.app URL. You need to give developers the ability to test the latest revisions of the service before the service is exposed to customers. What should you do?
+     - A. Run the gcloud run deploy booking-engine --no-traffic --tag dev command. Use the https://dev--booking-engine-abcdef.a.run.app URL for testing.
+     - B. Run the gcloud run services update-traffic booking-engine --to-revisions LATEST=1 command. Use the https://booking-engine- abcdef.a.run.app URL for testing.
+     - C. Pass the curl –H “Authorization:Bearer $(gcloud auth print-identity-token)” auth token. Use the https://booking-engine-abcdef.a.run.app URL to test privately.
+     - D. Grant the roles/run.invoker role to the developers testing the booking-engine service. Use the https://booking-engine- abcdef.private.run.app URL for testing.
+
+    **A**. You can deploy a new revision of existing service with a tag, allowing you to test new revision without serving traffic. https://cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration#deploy-with-tags
+
+111. You are configuring connectivity across Google Kubernetes Engine (GKE) clusters in different VPCs. You notice that the nodes in Cluster A are unable to access the nodes in Cluster B. You suspect that the workload access issue is due to the network configuration. You need to troubleshoot the issue but do not have execute access to workloads and nodes. You want to identify the layer at which the network connectivity is broken. What should you do?
+     - A. Install a toolbox container on the node in Cluster Confirm that the routes to Cluster B are configured appropriately.
+     - B. Use Network Connectivity Center to perform a Connectivity Test from Cluster A to Cluster B.
+     - C. Use a debug container to run the traceroute command from Cluster A to Cluster B and from Cluster B to Cluster A. Identify the common failure point.
+     - D. Enable VPC Flow Logs in both VPCs, and monitor packet drops.
+
+    **B**. Network Intelligence Center allows you to perform connectivity test to check between network endpoint, to test configuration. https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview
+
+112. You manage an application that runs in Google Kubernetes Engine (GKE) and uses the blue/green deployment methodology. Extracts of the Kubernetes manifests are shown below:
+
+    ```
+    apiVersion: v1
+    kind: Service
+    metadata:
+        name: app-vpc
+    spec:
+        selector:
+            app: my-app
+                version: green
+    ```
+
+The Deployment app-green was updated to use the new version of the application. During post-deployment monitoring, you notice that the majority of user requests are failing. You did not observe this behavior in the testing environment. You need to mitigate the incident impact on users and enable the developers to troubleshoot the issue. What should you do?
+
+    - A. Update the Deployment app-blue to use the new version of the application.
+    - B. Update the Deployment app-green to use the previous version of the application.
+    - C. Change the selector on the Service app-svc to app: my-app.
+    - D. Change the selector on the Service app-svc to app: my-app, version: blue.
+
+    **D**. To swap version between blue/green deployment, check the `spec.selector.app.version` and update correspondingly. In this case change to `version:blue`
+
+113. You are running a web application deployed to a Compute Engine managed instance group. Ops Agent is installed on all instances. You recently noticed suspicious activity from a specific IP address. You need to configure Cloud Monitoring to view the number of requests from that specific IP address with minimal operational overhead. What should you do?
+     - A. Configure the Ops Agent with a logging receiver. Create a logs-based metric.
+     - B Create a script to scrape the web server log. Export the IP address request metrics to the Cloud Monitoring API.
+     - C. Update the application to export the IP address request metrics to the Cloud Monitoring API.
+     - D. Configure the Ops Agent with a metrics receiver.
+
+    **A**. You want to monitor the request from certain IP address in a time series. Monitoring do not directly access information from request IP, but the cloud logging can. To turn logging info into time series data, you create log-based metrics. Of course you need logging receiver.
+
+114. Your organization is using Helm to package containerized applications. Your applications reference both public and private charts. Your security team flagged that using a public Helm repository as a dependency is a risk. You want to manage all charts uniformly, with native access control and VPC Service Controls. What should you do?
+     - A. Store public and private charts in OCI format by using Artifact Registry.
+     - B. Store public and private charts by using GitHub Enterprise with Google Workspace as the identity provider.
+     - C. Store public and private charts by using Git repository. Configure Cloud Build to synchronize contents of the repository into a Cloud Storage bucket. Connect Helm to the bucket by using https://[bucket].storage-googleapis.com/[helmchart] as the Helm repository.
+     - D. Configure a Helm chart repository server to run in Google Kubernetes Engine (GKE) with Cloud Storage bucket as the storage backend.
+
+    **A**. Google recommend using OCI container image in Artifact Registry to save helm chars. https://cloud.google.com/artifact-registry/docs/helm
+
+115. You use Terraform to manage an application deployed to a Google Cloud environment. The application runs on instances deployed by a managed instance group. The Terraform code is deployed by using a CI/CD pipeline. When you change the machine type on the instance template used by the managed instance group, the pipeline fails at the terraform apply stage with the following error message: **Error Deleting: the instance_template resource is already being used**. You need to update the instance template and minimize disruption to the application and the number of pipeline runs. What should you do?
+     - A. Delete the managed instance group, and recreate it after updating the instance template.
+     - B. Add a new instance template, update the managed instance group to use the new instance template, and delete the old instance template.
+     - C. Remove the managed instance group from the Terraform state file, update the instance template, and reimport the managed instance group.
+     - D. Set the create_before_destroy meta-argument to true in the lifecycle block on the instance template.
+
+    **D**. Instance Group cannot be update in-place when there are instance running. In such case, use `create_before_destory` for anything that cannot be update in place. https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#create_before_destroy
+
+116. Your company operates in a highly regulated domain that requires you to store all organization logs for seven years. You want to minimize logging infrastructure complexity by using managed services. You need to avoid any future loss of log capture or stored logs due to misconfiguration or human error. What should you do?
+     - A. Use Cloud Logging to configure an aggregated sink at the organization level to export all logs into a BigQuery dataset.
+     - B. Use Cloud Logging to configure an aggregated sink at the organization level to export all logs into Cloud Storage with a seven-year retention policy and Bucket Lock.
+     - C. Use Cloud Logging to configure an export sink at each project level to export all logs into a BigQuery dataset
+     - D. Use Cloud Logging to configure an export sink at each project level to export all logs into Cloud Storage with a seven-year retention policy and Bucket Lock.
+
+    **B**. To centralize all logs across the orgs into one place for retention, use aggregated sink. To store long term, use cloud storage coldline.
+
+117. You are building the CI/CD pipeline for an application deployed to Google Kubernetes Engine (GKE). The application is deployed by using a Kubernetes Deployment, Service, and Ingress. The application team asked you to deploy the application by using the blue/green deployment methodology. You need to implement the rollback actions. What should you do?
+     - A. Run the kubectl rollout undo command.
+     - B. Delete the new container image, and delete the running Pods.
+     - C. Update the Kubernetes Service to point to the previous Kubernetes Deployment.
+     - D. Scale the new Kubernetes Deployment to zero.
+
+    **C**. With Blue/Green deployment, you update `spec.service.app.selector` to point to a previous deployment
+
+118. You are building and running client applications in Cloud Run and Cloud Functions. Your client requires that all logs must be available for one year so that the client can import the logs into their logging service. You must minimize required code changes. What should you do?
+     - A. Update all images in Cloud Run and all functions in Cloud Functions to send logs to both Cloud Logging and the client's logging service. Ensure that all the ports required to send logs are open in the VPC firewall.
+     - B. Create a Pub/Sub topic, subscription, and logging sink. Configure the logging sink to send all logs into the topic. Give your client access to the topic to retrieve the logs.
+     - C. Create a storage bucket and appropriate VPC firewall rules. Update all images in Cloud Run and all functions in Cloud Functions to send logs to a file within the storage bucket.
+     - D. Create a logs bucket and logging sink. Set the retention on the logs bucket to 365 days. Configure the logging sink to send logs to the bucket. Give your client access to the bucket to retrieve the logs.
+
+    **D**. Use GCP native solution, all standard logs will be available in cloud logging. Create a custom log bucket so that retention time can be set to 365 days. Also create a logging sink for Cloud Storage Bucket and give the bucket access to client.
+
+119. As part of your company's initiative to shift left on security, the InfoSec team is asking all teams to implement guard rails on all the Google Kubernetes Engine (GKE) clusters to only allow the deployment of trusted and approved images. You need to determine how to satisfy the InfoSec team's goal of shifting left on security. What should you do?
+    - A. Deploy Falco or Twistlock on GKE to monitor for vulnerabilities on your running Pods.
+    - B. Configure Identity and Access Management (IAM) policies to create a least privilege model on your GKE clusters.
+    - C. Use Binary Authorization to attest images during your CI/CD pipeline.
+    - D. Enable Container Analysis in Artifact Registry, and check for common vulnerabilities and exposures (CVEs) in your container images.
+
+    **C**. Bindary Authorization allows you to set attester and only allow image from trusted source to be deployed. 
+
+120. You have an application that runs in Google Kubernetes Engine (GKE). The application consists of several microservices that are deployed to GKE by using Deployments and Services. One of the microservices is experiencing an issue where a Pod returns 403 errors after the Pod has been running for more than five hours. Your development team is working on a solution, but the issue will not be resolved for a month. You need to ensure continued operations until the microservice is fixed. You want to follow Google-recommended practices and use the fewest number of steps. What should you do?
+    - A. Create a cron job to terminate any Pods that have been running for more than five hours.
+    - B. Add a HTTP liveness probe to the microservice's deployment.
+    - C. Monitor the Pods, and terminate any Pods that have been running for more than five hours.
+    - D. Configure an alert to notify you whenever a Pod returns 403 errors.
+
+    **B**. After 5 hours, the pod has been running but the HTTP return error. Adding HTTP Liveness probe, Kubernetes periodically check the HTTP endpoint. If it fails, **Kubernetes will kill the pod and restart it**. This is the easiest and google recommended way.
+
+121. You want to share a Cloud Monitoring custom dashboard with a partner team. What should you do?
+    - A. Provide the partner team with the dashboard URL to enable the partner team to create a copy of the dashboard.
+    - B. Export the metrics to BigQuery. Use Looker Studio to create a dashboard, and share the dashboard with the partner team.
+    - C. Copy the Monitoring Query Language (MQL) query from the dashboard, and send the ML query to the partner team.
+    - D. Download the JSON definition of the dashboard, and send the JSON file to the partner team.
+
+    **A**. To share monitoring dashboard, google recommend use Monitoring to send the URL of a dashboard to your recipients. https://cloud.google.com/monitoring/charts/share-dashboards If you want to share the definition (Strucuture) instead of the actual info, using JSON. 
+
+122. You are building an application that runs on Cloud Run. The application needs to access a third-party API by using an API key. You need to determine a secure way to store and use the API key in your application by following Google-recommended practices. What should you do?
+     - A. Save the API key in Secret Manager as a secret. Reference the secret as an environment variable in the Cloud Run application.
+     - B. Save the API key in Secret Manager as a secret key. Mount the secret key under the /sys/api_key directory, and decrypt the key in the Cloud Run application.
+     - C. Save the API key in Cloud Key Management Service (Cloud KMS) as a key. Reference the key as an environment variable in the Cloud Run application.
+     - D. Encrypt the API key by using Cloud Key Management Service (Cloud KMS), and pass the key to Cloud Run as an environment variable. Decrypt and use the key in Cloud Run.
+
+    **A**. Google recommend to use secret manager to store API key for cloud run. https://cloud.google.com/run/docs/configuring/services/secrets#access-secrets:~:text=Pass%20a%20secret%20using%20environment%20variables.%20Environment%20variables%20are%20resolved%20at%20instance%20startu. The key difference between Secret Manager and KMS. Secret Manager is used to store credentials, password, API key for authentication and authoriztion. KMS do encryption only, therefore not for crendential but other such as data in database, eg: SIN number.
+
+123. You are currently planning how to display Cloud Monitoring metrics for your organization’s Google Cloud projects. Your organization has three folders and six projects:
+
+|Folders|Projects|
+|--|--|
+|Development| app-one-dev, app-two-dev|
+|Staging| app-one-staging, app-two-staging|
+|Production| app-one-prod, app-two-prod|
+
+You want to configure Cloud Monitoring dashboards to only display metrics from the projects within one folder. You need to ensure that the dashboards do not display metrics from projects in the other folders. You want to follow Google-recommended practices. What should you do?
+
+     - A. Create a single new scoping project.
+     - B. Create new scoping projects for each folder.
+     - C. Use the current app-one-prod project as the scoping project.
+     - D. Use the current app-one-dev, app-one-staging, and app-one-prod projects as the scoping project for each folder.
+
+    **B**. You want to organize mertics by folders (environment) therefore totally we need 3 monitoring dashboard. With each folder, two projects are for actual work so they are not suitable to host metrics from another project. Therefore create new scoping projects for each folder.
+
+124. Your company’s security team needs to have read-only access to Data Access audit logs in the _Required bucket. You want to provide your security team with the necessary permissions following the principle of least privilege and Google-recommended practices. What should you do?
+    - A. Assign the roles/logging.viewer role to each member of the security team.
+    - B. Assign the roles/logging.viewer role to a group with all the security team members.
+    - C. Assign the roles/logging.privateLogViewer role to each member of the security team.
+    - D. Assign the roles/logging.privateLogViewer role to a group with all the security team members.
+
+    **D**. Data Access Log is private log and need specific `privateLogViewer` role. You should assign user to groups with role, not assign permission to user. https://cloud.google.com/logging/docs/audit#roles. 
+
+125. Your team is building a service that performs compute-heavy processing on batches of data. The data is processed faster based on the speed and number of CPUs on the machine. These batches of **data vary** in size and **may arrive at any time** from multiple third-party sources. You need to ensure that third parties are able to upload their data securely. You want to minimize costs, while ensuring that the data is processed as quickly as possible. What should you do?
+
+     - A. Provide a secure file transfer protocol (SFTP) server on a Compute Engine instance so that third parties can upload batches of data, and provide appropriate credentials to the server. Create a Cloud Function with a google.storage.object.finalize Cloud Storage trigger. Write code so that the function can scale up a Compute Engine autoscaling managed instance group. Use an image pre-loaded with the data processing software that terminates the instances when processing completes.
+     - B. Provide a Cloud Storage bucket so that third parties can upload batches of data, and provide appropriate Identity and Access Management (IAM) access to the bucket. Use a standard Google Kubernetes Engine (GKE) cluster and maintain two services: one that processes the batches of data, and one that monitors Cloud Storage for new batches of data. Stop the processing service when there are no batches of data to process.
+     - C. Provide a Cloud Storage bucket so that third parties can upload batches of data, and provide appropriate Identity and Access Management (IAM) access to the bucket. Create a Cloud Function with a google.storage.object.finalize Cloud Storage trigger. Write code so that the function can scale up a Compute Engine autoscaling managed instance group. Use an image pre-loaded with the data processing software that terminates the instances when processing completes.
+     - D. Provide a Cloud Storage bucket so that third parties can upload batches of data, and provide appropriate Identity and Access Management (IAM) access to the bucket. Use Cloud Monitoring to detect new batches of data in the bucket and trigger a Cloud Function that processes the data. Set a Cloud Function to use the largest CPU possible to minimize the runtime of the processing.
+
+    **C**. Because the data can come at any time, we need somthing that and scale up and down automatically and potentially scale down to 0. Cloud function is a good choice compared to GKE with fixed 2 cluster. Then this is a batch process so providing a cloud storage for user to upload data is a good choice. Then the cloud function can access the bucket and process data. To do this, we need to give user correct cloud storage IAM permission. The cloud function is `storage.object.finalize` where an object is being upload successfully.
+
+126. You are reviewing your deployment pipeline in Google Cloud Deploy. You must reduce toil in the pipeline, and you want to minimize the amount of time it takes to complete an end-to-end deployment. What should you do? (Choose two.)
+    - A. Create a trigger to notify the required team to complete the next step when manual intervention is required.
+    - B. Divide the automation steps into smaller tasks.
+    - C. Use a script to automate the creation of the deployment pipeline in Google Cloud Deploy.
+    - D. Add more engineers to finish the manual steps.
+    - E. Automate promotion approvals from the development environment to the test environment.
+
+    **BE**. B. Divide steps into smaller task can have better flexibility. If one step fail, it can be fast to ping-point to diagnose. It also can potential run parallel to increase the speed, such as building multiple microservices at the same time. E Promotion from dev to testing usually can be automated because it doesn't have impact on prod, such as promote when test pass. 
+
+127. You work for a global organization and are running a monolithic application on Compute Engine. You need to select the machine type for the application to use that optimizes CPU utilization by using the fewest number of steps. You want to use historical system metrics to identify the machine type for the application to use. You want to follow Google-recommended practices. What should you do?
+     - A. Use the Recommender API and apply the suggested recommendations.
+     - B. Create an Agent Policy to automatically install Ops Agent in all VMs.
+     - C. Install the Ops Agent in a fleet of VMs by using the gcloud CLI.
+     - D. Review the Cloud Monitoring dashboard for the VM and choose the machine type with the lowest CPU utilization.
+
+    **A**. The Recommender product for google is called Active Assist. It generate recommendations and insights to help optimize google project. The Recommender has and API interface. https://cloud.google.com/recommender/docs/whatis-activeassist
+
+128. You deployed an application into a large Standard Google Kubernetes Engine (GKE) cluster. The application is stateless and multiple pods run at the same time. Your application receives inconsistent traffic. You need to ensure that the user experience remains consistent regardless of changes in traffic and that the resource usage of the cluster is optimized. What should you do?
+     - A. Configure a cron job to scale the deployment on a schedule
+     - B. Configure a Horizontal Pod Autoscaler.
+     - C. Configure a Vertical Pod Autoscaler
+     - D. Configure cluster autoscaling on the node pool.
+
+    **B**. Inconsistent traffice = Horizontal Pod Autoscaler (HPA). Add or remove pods based on workload.
+
+129. You need to deploy a new service to production. The service needs to automatically scale using a managed instance group and should be deployed across multiple regions. The service needs a large number of resources for each instance and you need to plan for capacity. What should you do?
+     - A. Monitor results of Cloud Trace to determine the optimal sizing.
+     - B. Use the n2-highcpu-96 machine type in the configuration of the managed instance group.
+     - . Deploy the service in multiple regions and use an internal load balancer to route traffic.
+     - D. Validate that the resource requirements are within the available project quota limits of each region.
+
+     **D**. Repeated question as #37. 
+
+130. You are analyzing Java applications in production. All applications have Cloud Profiler and Cloud Trace installed and configured by default. You want to determine which applications need performance tuning. What should you do? (Choose two.)
+     - A. Examine the wall-clock time and the CPU time of the application. If the difference is substantial increase the CPU resource allocation.
+     - B. Examine the wall-clock time and the CPU time of the application. If the difference is substantial, increase the memory resource allocation.
+     - C. Examine the wall-clock time and the CPU time of the application. If the difference is substantial, increase the local disk storage allocation.
+     - D. Examine the latency time the wall-clock time and the CPU time of the application. If the latency time is slowly burning down the error budget, and the difference between wall-clock time and CPU time is minimal mark the application for optimization.
+     - E. Examine the heap usage of the application. If the usage is low, mark the application for optimization.
+
+    **DE**. Wall-clock time is the total time for function run. CPU time is the time actually spent on execution. If the difference are substaintial, CPU is waiting - resource bottle neck such as long waiting on query result. If time is minimal, CPU is at full speed - code optimation. Heap usage indicate how memory is being allocated and use. You don't want it to go too high or keep going up as it indicate memory leak, you also don't want it too low because you do not allocate enough to process work efficiently. https://cloud.google.com/profiler/docs/concepts-profiling. To conclude: ABC are wrong because too big difference means system is waiting for external resource not at code level, such as external HTTP or DB connection time. D, if the time difference is miminal, CPU is at its full speed. And at the same time error budget is burning down which means the performance cannot meet user expectation. E if the heap usuage is low, application do not receive enough memory to perform task. 
+
+131. Your organization stores all application logs from multiple Google Cloud projects in a central Cloud Logging project. Your security team wants to enforce a rule that each project team can only view their respective logs and only the operations team can view all the logs. You need to design a solution that meets the security team s requirements while minimizing costs. What should you do?
+     - A. Grant each project team access to the project _Default view in the central logging project. Grant togging viewer access to the operations team in the central logging project.
+     - B. Create Identity and Access Management (IAM) roles for each project team and restrict access to the _Default log view in their individual Google Cloud project. Grant viewer access to the operations team in the central logging project.
+     - C. Create log views for each project team and only show each project team their application logs. Grant the operations team access to the _AllLogs view in the central logging project.
+     - D. Export logs to BigQuery tables for each project team. Grant project teams access to their tables. Grant logs writer access to the operations team in the central logging project.
+
+    **C**. Logs need to be centralized in one project, but project team only access their logs. This is a perfect use case for `log view`, which let you grant a user access to only a subset of the log entries stored in a log bucket. For operation teams they need to access all logs. Cloud logging bucket automatically has a `_AllLogs` view that can be used by operation teams. https://cloud.google.com/logging/docs/routing/overview#log-views
+
+132. Your company uses Jenkins running on Google Cloud VM instances for CI/CD. You need to extend the functionality to use infrastructure as code automation by using Terraform. You must ensure that the Terraform Jenkins instance is authorized to create Google Cloud resources.
+You want to follow Google-recommended practices. What should you do?
+    - A. Confirm that the Jenkins VM instance has an attached service account with the appropriate Identity and Access Management (IAM) permissions.
+    - B. Use the Terraform module so that Secret Manager can retrieve credentials.
+    - C. Create a dedicated service account for the Terraform instance. Download and copy the secret key value to the GOOGLE_CREDENTIALS environment variable on the Jenkins server.
+    - D. Add the gcloud auth application-default login command as a step in Jenkins before running the Terraform commands.
+
+    **A**. 1. You want to use a Service Account 2. The service account need the correct access. On top of these two, you can config the Terraform instance to use that service account. There is no need to (C) create another service account, and even to copy the key. https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#running-terraform-on-google-cloud
+
+133. You encounter a large number of outages in the production systems you support. You receive alerts for all the outages, the alerts are due to unhealthy systems that are automatically restarted within a minute. You want to set up a process that would prevent staff burnout while following Site Reliability Engineering (SRE) practices. What should you do?
+     - A. Eliminate alerts that are not actionable
+     - B. Redefine the related SLO so that the error budget is not exhausted
+     - C. Distribute the alerts to engineers in different time zones
+     - D. Create an incident report for each of the alerts
+
+    **A**. Duplicate question. Only actionable items should be alerted.
+
+134. As part of your company's initiative to shift left on security, the InfoSec team is asking all teams to implement guard rails on all the Google Kubernetes Engine (GKE) clusters to only allow the deployment of trusted and approved images. You need to determine how to satisfy the InfoSec team's goal of shifting left on security. What should you do?
+    - A. Enable Container Analysis in Artifact Registry, and check for common vulnerabilities and exposures (CVEs) in your container images
+    - B. Use Binary Authorization to attest images during your CI/CD pipeline
+    - C. Configure Identity and Access Management (IAM) policies to create a least privilege model on your GKE clusters.
+    - D. Deploy Falco or Twistlock on GKE to monitor for vulnerabilities on your running Pods
+
+    **B**. Duplicate with #119.
+
+135. Your company operates in a highly regulated domain. Your security team requires that only trusted container images can be deployed to Google Kubernetes Engine (GKE). You need to implement a solution that meets the requirements of the security team while minimizing management overhead. What should you do?
+    - A. Configure Binary Authorization in your GKE clusters to enforce deploy-time security policies.
+    - B. Grant the roles/artifactregistry.writer role to the Cloud Build service account. Confirm that no employee has Artifact Registry write permission.
+    - C. Use Cloud Run to write and deploy a custom validator. Enable an Eventarc trigger to perform validations when new images are uploaded.
+    - D. Configure Kritis to run in your GKE clusters to enforce deploy-time security policies.
+
+    **A**. Same concept ast #119 and #137
+
+136. Your CTO has asked you to implement a postmortem policy on every incident for internal use. You want to define what a good postmortem is to ensure that the policy is successful at your company. What should you do? (Choose two.)
+     - A. Ensure that all postmortems include what caused the incident, identify the person or team responsible for causing the incident, and how to prevent a future occurrence of the incident.
+     - B. Ensure that all postmortems include what caused the incident, how the incident could have been worse, and how to prevent a future occurrence of the incident.
+     - C. Ensure that all postmortems include the severity of the incident, how to prevent a future occurrence of the incident, and what caused the incident without naming internal system components.
+     - D. Ensure that all postmortems include how the incident was resolved and what caused the incident without naming customer information.
+     - E. Ensure that all postmortems include all incident participants in postmortem authoring and share postmortems as widely as possible.
+
+    **CE**. Postmortem should focus on blamelessly learning from incident. It should no include person. It doesn't need to focus on how it could been worse and it should share as wide as possible. Between C and D, it is important to mention the future prevention. 
+
+137. You are developing reusable infrastructure as code modules. Each module contains integration tests that launch the module in a test project. You are using GitHub for source control. You need to continuously test your feature branch and ensure that all code is tested before changes are accepted. You need to implement a solution to automate the integration tests. What should you do?
+     - A. Use a Jenkins server for CI/CD pipelines. Periodically run all tests in the feature branch.
+     - B. Ask the pull request reviewers to run the integration tests before approving the code.
+     - C. Use Cloud Build to run the tests. Trigger all tests to run after a pull request is merged.
+     - D. Use Cloud Build to run tests in a specific folder. Trigger Cloud Build for every GitHub pull request.
+
+    **D**. Cloud build is a script runner that provide triggers. It is common to use cloud build to trigger test. The condition should be on Pull Request, you should run it before code get merged.
+
+138. Your company processes IoT data at scale by using Pub/Sub, App Engine standard environment, and an application written in Go. You noticed that the performance inconsistently degrades at peak load. You could not reproduce this issue on your workstation. You need to continuously monitor the application in production to identify slow paths in the code. You want to minimize performance impact and management overhead. What should you do?
+    - A. Use Cloud Monitoring to assess the App Engine CPU utilization metric.
+    - B. Install a continuous profiling tool into Compute Engine. Configure the application to send profiling data to the tool.
+    - C. Periodically run the go tool pprof command against the application instance. Analyze the results by using flame graphs.
+    - D. Configure Cloud Profiler, and initialize the cloud.google.com/go/profiler library in the application.
+
+    **D**. Cloud profiler is like an engineering look at the bottle neck at the code level. It fits well here as it need to identify the slow path in code but cannot trigger the issue at workstation.
+
+139. Your company runs services by using Google Kubernetes Engine (GKE). The GKE dusters in the development environment run applications with verbose logging enabled. Developers view logs by using the kubectl logs command and do not use Cloud Logging. Applications do not have a uniform logging structure defined. You need to minimize the costs associated with application logging while still collecting GKE operational logs. What should you do?
+     - A. Run the gcloud container clusters update --logging=SYSTEM command for the development cluster.
+     - B. Run the gcloud container clusters update --logging=WORKLOAD command for the development cluster.
+     - C. Run the gcloud logging sinks update _Default --disabled command in the project associated with the development environment.
+     - D. Add the severity >= DEBUG resource.type = "k8s_container" exclusion filter to the _Default logging sink in the project associated with the development environment.
+
+    **D**. This question basically asked "I don't use cloud logging for GKE, how to minize the cost". So the solution is to reduce the amount of logs volumne goes to gloud logging. ??
+
+140. You have deployed a fleet of Compute Engine instances in Google Cloud. You need to ensure that monitoring metrics and logs for the instances are visible in Cloud Logging and Cloud Monitoring by your company's operations and cyber security teams. You need to grant the required roles for the Compute Engine service account by using Identity and Access Management (IAM) while following the principle of least privilege. What should you do?
+    - A. Grant the logging.logWriter and monitoring.metricWriter roles to the Compute Engine service accounts.
+    - B. Grant the logging.admin and monitoring.editor roles to the Compute Engine service accounts.
+    - C. Grant the logging.editor and monitoring.metricWriter roles to the Compute Engine service accounts.
+    - D. Grant the logging.logWriter and monitoring.editor roles to the Compute Engine service accounts.
+
+    **A**. roles writer < editor < admin. Service Account only needs to write to metric and logging. No need to grant editor or admin role.
+
+141. You are the Site Reliability Engineer responsible for managing your company's data services and products. You regularly navigate operational challenges, such as unpredictable data volume and high cost, with your company's data ingestion processes. You recently learned that a new data ingestion product will be developed in Google Cloud. You need to collaborate with the product development team to provide operational input on the new product. What should you do?
+     - A. Deploy the prototype product in a test environment, run a load test, and share the results with the product development team.
+     - B. When the initial product version passes the quality assurance phase and compliance assessments, deploy the product to a staging environment. Share error logs and performance metrics with the product development team.
+     - C. When the new product is used by at least one internal customer in production, share error logs and monitoring metrics with the product development team.
+     - D. Review the design of the product with the product development team to provide feedback early in the design phase.
+
+    **D**. There is no official reference but you want to review the google product and see how it can fit with your own product development team. In this process you want to corporate with product development team as early as possible before doing your own prototyping etc. 
+
+142. You are investigating issues in your production application that runs on Google Kubernetes Engine (GKE). You determined that the source of the issue is a recently updated container image, although the exact change in code was not identified. The deployment is currently pointing to the latest tag. You need to update your cluster to run a version of the container that functions as intended. What should you do?
+     - A. Create a new tag called stable that points to the previously working container, and change the deployment to point to the new tag.
+     - B. Alter the deployment to point to the sha256 digest of the previously working container.
+     - C. Build a new container from a previous Git tag, and do a rolling update on the deployment to the new container.
+     - D. Apply the latest tag to the previous container image, and do a rolling update on the deployment.
+
+    **B**. Tag is mutable and therefore rolling back by tag is untrustable. To make sure you point at the exactly version, use the sha256 digest. Plus, tag based deployment is not possible if using binary authorization.  https://cloud.google.com/kubernetes-engine/docs/concepts/about-container-images#disadvantages_of_image_tags
+
+143. You need to create a Cloud Monitoring SLO for a service that will be published soon. You want to verify that requests to the service will be addressed in fewer than 300 ms at least 90% of the time per calendar month. You need to identify the metric and evaluation method to use. What should you do?
+     - A. Select a latency metric for a request-based method of evaluation.
+     - B. Select a latency metric for a window-based method of evaluation.
+     - C. Select an availability metric for a request-based method of evaluation.
+     - D. Select an availability metric for a window-based method of evaluation.
+
+    **A**. Request based evaluation look at individual item, give a yes or now answer, do not aggregate or take average. Window based request measure a consistent duration and take average. This latency of 300ms is measured by individual request, regardless of how it distributed. Note that one calendar month here is the **compliance period**, not indicating window based. Each SLO regardless, will need a compliance period. https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring#compliance-period An example of window based: system availability is 95% in a calendar month. Here it aggregate and average the time in a window. 
+
+144. You have an application that runs on Cloud Run. You want to use live production traffic to test a new version of the application, while you let the quality assurance team perform manual testing. You want to limit the potential impact of any issues while testing the new version, and you must be able to roll back to a previous version of the application if needed. How should you deploy the new version? (Choose two.)
+     - A. Deploy the application as a new Cloud Run service.
+     - B. Deploy a new Cloud Run revision with a tag and use the --no-traffic option.
+     - C. Deploy a new Cloud Run revision without a tag and use the --no-traffic option.
+     - D. Deploy the new application version and use the --no-traffic option. Route production traffic to the revision’s URL.
+     - E. Deploy the new application version, and split traffic to the new version.
+
+    **B** and maybe **D**. B is documented here https://cloud.google.com/run/docs/rollouts-rollbacks-traffic-migration#tags. Deploy with tags will create a new URL with tag prefixed. And `--no-traffic` options will not route any real traffic. But you can use the tagged URL for testing in live. D doesn't looks very correct either but is the second most reasonable options
+
+145. You recently noticed that one of your services has exceeded the error budget for the current rolling window period. Your company's product team is about to launch a new feature. You want to follow Site Reliability Engineering (SRE) practices. What should you do?
+     - A. Notify the team about the lack of error budget and ensure that all their tests are successful so the launch will not further risk the error budget
+     - B. Notify the team that their error budget is used up. Negotiate with the team for a launch freeze or tolerate a slightly worse user experience.
+     - C. Escalate the situation and request additional error budget.
+     - D. Look through other metrics related to the product and find SLOs with remaining error budget. Reallocate the error budgets and allow the feature launch.
+
+    **B**. General rule is that when error budget used up you have to halt feature release and work on reliability. Error budget is not shared between SLO. Think about this, if the availablity SLO is up, you cannot move latency SLO to availability, it doesn't make sense. There are some exception, for example if the error budget burn out is due to reason out of your control, such as company wide network problem, or your user is OK with slightly worse performance.
+
+146. You need to introduce postmortems into your organization. You want to ensure that the postmortem process is well received. What should you do? (Choose two.)
+     - A. Encourage new employees to conduct postmortems to team through practice.
+     - B. Create a designated team that is responsible for conducting all postmortems.
+     - C. Encourage your senior leadership to acknowledge and participate in postmortems.
+     - D. Ensure that writing effective postmortems is a rewarded and celebrated practice.
+     - E. Provide your organization with a forum to critique previous postmortems.
+
+    **CD**. In Google SRE book, there are 3 things to do when introducing postmortem culture: 1. Ease the work flow, help identify the critera. 2. Reward and celebrated the postmortem. 3. Encourage senior leadership's acknowledge and participation. https://sre.google/sre-book/postmortem-culture/#:~:text=Make%20sure%20that,value%20of%20postmortems!
+
+147. You need to enforce several constraint templates across your Google Kubernetes Engine (GKE) clusters. The constraints include policy parameters, such as restricting the Kubernetes API. You must ensure that the policy parameters are stored in a GitHub repository and automatically applied when changes occur. What should you do?
+     - A. Set up a GitHub action to trigger Cloud Build when there is a parameter change. In Cloud Build, run a gcloud CLI command to apply the change.
+     - B. When there is a change in GitHub. use a web hook to send a request to Anthos Service Mesh, and apply the change.
+     - C. Configure Anthos Config Management with the GitHub repository. When there is a change in the repository, use Anthos Config Management to apply the change.
+     - D. Configure Config Connector with the GitHub repository. When there is a change in the repository, use Config Connector to apply the change.
+
+    **C**. Anthos is used when managing Kubernetes configuration within or across multiple platform.
+
+148. You are the Operations Lead for an ongoing incident with one of your services. The service usually runs at around 70% capacity. You notice that one node is returning 5xx errors for all requests. There has also been a noticeable increase in support cases from customers. You need to remove the offending node from the load balancer pool so that you can isolate and investigate the node. You want to follow Google-recommended practices to manage the incident and reduce the impact on users. What should you do?
+     - A. 1. Communicate your intent to the incident team. 2. Perform a load analysis to determine if the remaining nodes can handle the increase in traffic offloaded from the removed node, and scale appropriately. 3. When any new nodes report healthy, drain traffic from the unhealthy node, and remove the unhealthy node from service.
+     - B. 1. Communicate your intent to the incident team. 2. Add a new node to the pool, and wait for the new node to report as healthy. 3. When traffic is being served on the new node, drain traffic from the unhealthy node, and remove the old node from service.
+     - C. 1. Drain traffic from the unhealthy node and remove the node from service. 2. Monitor traffic to ensure that the error is resolved and that the other nodes in the pool are handling the traffic appropriately. 3. Scale the pool as necessary to handle the new load. 4. Communicate your actions to the incident team.
+     - D. 1. Drain traffic from the unhealthy node and remove the old node from service. 2. Add a new node to the pool, wait for the new node to report as healthy, and then serve traffic to the new node. 3. Monitor traffic to ensure that the pool is healthy and is handling traffic appropriately. 4. Communicate your actions to the incident team.
+
+    **A**. For operation like removing node, you always want to communicate with the incident team first. Then, you want to make sure the remaining node can handle the load so it doesn't cause more problem Finally you can route the traffic.
+
+149. You are configuring your CI/CD pipeline natively on Google Cloud. You want builds in a pre-production Google Kubernetes Engine (GKE) environment to be automatically load-tested before being promoted to the production GKE environment. You need to ensure that only builds that have passed this test are deployed to production. You want to follow Google-recommended practices. How should you configure this pipeline with Binary Authorization?
+    - A. Create an attestation for the builds that pass the load test by requiring the lead quality assurance engineer to sign the attestation by using their personal private key.
+     - B. Create an attestation for the builds that pass the load test by using a private key stored in Cloud Key Management Service (Cloud KMS) with a service account JSON key stored as a Kubernetes Secret.
+     - C. Create an attestation for the builds that pass the load test by using a private key stored in Cloud Key Management Service (Cloud KMS) authenticated through Workload Identity.
+     - D. Create an attestation for the builds that pass the load test by requiring the lead quality assurance engineer to sign the attestation by using a key stored in Cloud Key Management Service (Cloud KMS).
+
+    **C**. The key is how to test the workload with automation since all options mention attestation. A and D are manual intervention. B and C both work but for Kubernetes, google recommend to use Workload Identity. It associate a Google Service account with Kubernete service account and authenticate without JSON key.
+
+150. You are deploying an application to Cloud Run. The application requires a password to start. Your organization requires that all passwords are rotated every 24 hours, and your application must have the latest password. You need to deploy the application with no downtime. What should you do?
+     - A. Store the password in Secret Manager and send the secret to the application by using environment variables.
+     - B. Store the password in Secret Manager and mount the secret as a volume within the application.
+     - C. Use Cloud Build to add your password into the application container at build time. Ensure that Artifact Registry is secured from public access.
+     - D. Store the password directly in the code. Use Cloud Build to rebuild and deploy the application each time the password changes.
+
+    **B**. When cloud run need credentials to function, Google Recommend to use Secret Manager in two ways: 1. Mount as volume 2. Pass as environmental variables. The difference: Mount as volume fetch value from Secret manager so it is always the latest version, this work best in frequently rotation. Passing as ENV resolve the value at start time, so not the latest version of secret, but pin to a specific version. In this case, B
+
+151. Your company runs applications in Google Kubernetes Engine (GKE) that are deployed following a GitOps methodology. Application developers frequently create cloud resources to support their applications. You want to give developers the ability to manage infrastructure as code, while ensuring that you follow Google-recommended practices. You need to ensure that infrastructure as code reconciles periodically to avoid configuration drift. What should you do?
+     - A. Install and configure Config Connector in Google Kubernetes Engine (GKE).
+     - B. Configure Cloud Build with a Terraform builder to execute terraform plan and terraform apply commands.
+     - C. Create a Pod resource with a Terraform docker image to execute terraform plan and terraform apply commands.
+     - D. Create a Job resource with a Terraform docker image to execute terraform plan and terraform apply commands.
+
+    **A**. Config Connector is a Google Kubernetes add-on. It allows developer to manage Cloud resource such as Cloud SQL, Compute enigne using Kubernetes object in a declarative way (YAML). While Terraform is also IaC, the key is **reconciles periodically to avoid configuration drift**. Config Connector by default run in a reconcilation loop and check and correct for drift. Other options do not have this ability. 
+
+152. You are designing a system with three different environments: development, quality assurance (QA), and production. Each environment will be deployed with Terraform and has a Google Kubernetes Engine (GKE) cluster created so that application teams can deploy their applications. Anthos Config Management will be used and templated to deploy infrastructure level resources in each GKE cluster. All users (for example, infrastructure operators and application owners) will use GitOps. How should you structure your source control repositories for both Infrastructure as Code (IaC) and application code?
+
+     - A. • Cloud Infrastructure (Terraform) repository is shared: different directories are different environments • GKE Infrastructure (Anthos Config Management Kustomize manifests) repository is shared: different overlay directories are different environments • Application (app source code) repositories are separated: different branches are different features
+     - B. • Cloud Infrastructure (Terraform) repository is shared: different directories are different environments • GKE Infrastructure (Anthos Config Management Kustomize manifests) repositories are separated: different branches are different
+     environments • Application (app source code) repositories are separated: different branches are different features
+     - C. • Cloud Infrastructure (Terraform) repository is shared: different branches are different environments • GKE Infrastructure (Anthos Config Management Kustomize manifests) repository is shared: different overlay directories are different environments • Application (app source code) repository is shared: different directories are different features
+     - D. • Cloud Infrastructure (Terraform) repositories are separated: different branches are different environments • GKE Infrastructure (Anthos Config Management Kustomize manifests) repositories are separated: different overlay directories are different environments • Application (app source code) repositories are separated: different branches are different
+
+    **A**. In Terraform repo has one single branch that hold different directories for each env. So It is centrally managed and easy to view. Anthos Config is the same, because they will have shared config, centralize them in one place. The app code, which keep changing, as well as moving from one stage to the other, is separated into different branch. 
+
+153. You are configuring Cloud Logging for a new application that runs on a Compute Engine instance with a public IP address. A user-managed service account is attached to the instance. You confirmed that the necessary agents are running on the instance but you cannot see any log entries from the instance in Cloud Logging. You want to resolve the issue by following Google-recommended practices. What should you do?
+     - A. Export the service account key and configure the agents to use the key.
+     - B. Update the instance to use the default Compute Engine service account.
+     - C. Add the Logs Writer role to the service account.
+     - D. Enable Private Google Access on the subnet that the instance is in.
+
+    **C**. no logs in cloud logging suggest that the log is not written by service account. A D would not help. Add the proper role to SA will solve the issue. B is wrong for the context, it explicitly want to use user-managed service account. 
+
+154. As a Site Reliability Engineer, you support an application written in Go that runs on Google Kubernetes Engine (GKE) in production. After releasing a new version of the application, you notice the application runs for about 15 minutes and then restarts. You decide to add Cloud Profiler to your application and now notice that the heap usage grows constantly until the application restarts. What should you do?
+     - A. Increase the CPU limit in the application deployment.
+     - B. Add high memory compute nodes to the cluster.
+     - C. Increase the memory limit in the application deployment.
+     - D. Add Cloud Trace to the application, and redeploy.
+
+    **C**. Cloud Profiler identify the heap usage run high causing shutdown. This indicate there is a memory problem. C, increase the memory limit will help releasing the memory pressure. Option D is not as good as C in this case because 1. Cloud Trace is more of a tracing tool that is indirectly address the memory issue. 2. This happens after the release and you can kind of use the difference to locate where the issue is. Cloud Trace is less direct solution.
+
+155. You are deploying a Cloud Build job that deploys Terraform code when a Git branch is updated. While testing, you noticed that the job fails. You see the following error in the build logs: Initializing the backend...Error: Failed to get existing workspaces: querying Cloud Storage failed: googleapi: Error 403
+     - A. Change the Terraform code to use local state.
+     - B. Create a storage bucket with the name specified in the Terraform configuration.
+     - C. Grant the roles/owner Identity and Access Management (IAM) role to the Cloud Build service account on the project.
+     - D. Grant the roles/storage.objectAdmin Identity and Access Management (1AM) role to the Cloud Build service account on the state file bucket.
+
+    **D**. The message shows Terraform using Google Cloud Storage as backend, but the related service account has no sufficient permission. With the least privilege, grant `storage.objectAdmin` role
+
+156. Your company runs applications in Google Kubernetes Engine (GKE). Several applications rely on ephemeral volumes. You noticed some applications were unstable due to the **DiskPressure** node condition on the worker nodes. You need to identify which Pods are causing the issue, but you do not have execute access to workloads and nodes. What should you do?
+     - A. Check the node/ephemeral_storage/used_bytes metric by using Metrics Explorer.
+     - B. Check the container/ephemeral_storage/used_bytes metric by using Metrics Explorer.
+     - C. Locate all the Pods with emptyDir volumes. Use the df -h command to measure volume disk usage.
+     - D. Locate all the Pods with emptyDir volumes. Use the df -sh * command to measure volume disk usage.
+
+    **B**. DiskPressure is when a node's available disk space fall below predefined threshold. `used_byte` measure how much bytes being used, and because rely on `ephemeral volume` it should be `ephemeral_storage/used_bytes`. Even the DiskPressure condition is on node, what you want to check is which **pods** cause the problem, not which node, you need to look at which container is using too much space. Therefore it is B not A.
+
+157. You are designing a new Google Cloud organization for a client. Your client is concerned with the risks associated with long-lived credentials created in Google Cloud. You need to design a solution to completely eliminate the risks associated with the use of JSON service account keys while minimizing operational overhead. What should you do?
+     - A. Apply the constraints/iam.disableServiceAccountKevCreation constraint to the organization.
+     - B. Use custom versions of predefined roles to exclude all iam.serviceAccountKeys.* service account role permissions.
+     - C. Apply the constraints/iam.disableServiceAccountKeyUpload constraint to the organization.
+     - D. Grant the roles/iam.serviceAccountKeyAdmin IAM role to organization administrators only.
+
+    **A**. The client don't want the risk of long-lived credentials with JSON service account key. You can completely forbidden the creation of it by apply `iam.disableServiceAccountKeyCreation` organizational policy. This lets you control the use of unmanaged long-term credentials. https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_service_account_key_creation C, the upload only disable the upload of external public keys.
+
+158. You are designing a deployment technique for your applications on Google Cloud. As part of your deployment planning, you want to use live traffic to gather performance metrics for new versions of your applications. You need to test against the full production load before your applications are launched. What should you do?
+     - A. Use A/B testing with blue/green deployment.
+     - B. Use canary testing with continuous deployment.
+     - C. Use canary testing with rolling updates deployment.
+     - D. Use shadow testing with continuous deployment.
+
+    **D**. Full production testing **before** release to client. Use Shadow testing, which deploy to prod with 0 traffic. Then developers can run full load test on prod. This can be achieve by for example deploy to cloud run with tag.
+
+159. Your Cloud Run application writes unstructured logs as text strings to Cloud Logging. You want to convert the unstructured logs to JSON- based structured logs. What should you do?
+     - A. Modify the application to use Cloud Logging software development kit (SDK), and send log entries with a jsonPayload field.
+     - B. Install a Fluent Bit sidecar container, and use a JSON parser.
+     - C. Install the log agent in the Cloud Run container image, and use the log agent to forward logs to Cloud Logging.
+     - D. Configure the log agent to convert log text payload to JSON payload.
+
+    **D**. For this type of question you typically do not want to modify the application but to use existing google product. https://cloud.google.com/logging/docs/agent/logging/configuration#process-payload While cloud run incorporate with logging agent by default, it is unstructured. To do so, you can customize the agents config to let it support structured log. 
+
+160. Your company is planning a large marketing event for an online retailer during the holiday shopping season. You are expecting your web application to receive a large volume of traffic in a short period. You need to prepare your application for potential failures during the event. What should you do? (Choose two.)
+     - A. Configure Anthos Service Mesh on the application to identify issues on the topology map.
+     - B. Ensure that relevant system metrics are being captured with Cloud Monitoring, and create alerts at levels of interest.
+     - C. Review your increased capacity requirements and plan for the required quota management.
+     - D. Monitor latency of your services for average percentile latency.
+     - E. Create alerts in Cloud Monitoring for all common failures that your application experiences.
+
+    **BC**. To prepare for large volumne of traffic, you first need to analyze the capacity and request quota if need, so C. You also want to make sure the metrics and alert are set properly, but ONLY for related topic so B instead of E.
+
+161. Your company recently migrated to Google Cloud. You need to design a fast, reliable, and repeatable solution for your company to provision new projects and basic resources in Google Cloud. What should you do?
+     - A. Use the Google Cloud console to create projects.
+     - B. Write a script by using the gcloud CLI that passes the appropriate parameters from the request. Save the script in a Git repository.
+     - C. Write a Terraform module and save it in your source control repository. Copy and run the terraform apply command to create the new project.
+     - D. Use the Terraform repositories from the Cloud Foundation Toolkit. Apply the code with appropriate parameters to create the Google Cloud project and related resources.
+
+    **D**. When migrated to GCP, you are likely to create a massive resource at the same time. It should use an automated IaC solution. D is automated and can be applied multiple time based on params while C is manual copy and run.
+
+162. You are configuring a CI pipeline. The build step for your CI pipeline integration testing requires access to APIs inside your private VPC network. Your security team requires that you do not expose API traffic publicly. You need to implement a solution that minimizes management overhead. What should you do?
+     - A. Use Cloud Build private pools to connect to the private VPC.
+     - B. Use Spinnaker for Google Cloud to connect to the private VPC.
+     - C. Use Cloud Build as a pipeline runner. Configure Internal HTTP(S) Load Balancing for API access.
+     - D. Use Cloud Build as a pipeline runner. Configure External HTTP(S) Load Balancing with a Google Cloud Armor policy for API access.
+
+    **A**. By default cloud build run in default pool. To have access private network, resource and to disable public IP, use Private pool connection.
+
+163. You are leading a DevOps project for your organization. The DevOps team is responsible for managing the service infrastructure and being on-call for incidents. The Software Development team is responsible for writing, submitting, and reviewing code. Neither team has any published SLOs. You want to design a new joint-ownership model for a service between the DevOps team and the Software Development team. Which responsibilities should be assigned to each team in the new joint-ownership model?
+    ![choice](./src/163.JPG)
+
+    **C**. Code Review is shared responsibility because the codebase will contains both functional and infrasturecutral code. On-call is shared responsibility because incident can happens on both reliability and functionality. To meet SLO, it needs coporation of both team. The dedicated responsibility, DevOps will manage infra, Dev team write code
+
+164. You recently migrated an ecommerce application to Google Cloud. You now need to prepare the application for the upcoming peak traffic season. You want to follow Google-recommended practices. What should you do first to prepare for the busy season?
+     - A. Migrate the application to Cloud Run, and use autoscaling.
+     - B. Create a Terraform configuration for the application's underlying infrastructure to quickly deploy to additional regions.
+     - C. Load test the application to profile its performance for scaling.
+     - D. Pre-provision the additional compute power that was used last season, and expect growth.
+
+    **C**. When preparing for peak traffic, there are two things always need to be done first **1.** Load test to figure out the performance capbility **2.** to make sure you have enough quota. Without these two, you have no guideline on whether, and how much you need to scale.
+
+165. You are monitoring a service that uses n2-standard-2 Compute Engine instances that serve large files. Users have reported that downloads are slow. Your Cloud Monitoring dashboard shows that your VMs are running at peak network throughput. You want to improve the network throughput performance. What should you do?
+    - A. Add additional network interface controllers (NICs) to your VMs.
+    - B. Deploy a Cloud NAT gateway and attach the gateway to the subnet of the VMs.
+    - C. Change the machine type for your VMs to n2-standard-8.
+    - D. Deploy the Ops Agent to export additional monitoring metrics.
+
+    **C**. *Download slow* talks about egress bandwidth. Note that instance machine type defines its max possible egress rate. Add virtual networks interfaces or additional IP address will not change the bandwith. https://cloud.google.com/compute/docs/network-bandwidth#vm-out-baseline:~:text=Neither%20additional%20virtual,bandwidth%20per%20vNIC And therefore A B are wrong. D is irrelavent. Why C works? according https://cloud.google.com/compute/docs/general-purpose-machines#n2-standard, change from `-2` to `-8` will increase from 10 to 16Gbps.
+    NIC allows VM to connect to VPC. Multiple NIC allow one instance to connect to multiple VPC, common use like Firewall, traffic spliting or load balancing. Cloud NAT (network address translation) typlicall use to allow private resource to access public internet without exposing IP address. 
+
+166. Your organization is starting to containerize with Google Cloud. You need a fully managed storage solution for container images and Helm charts. You need to identify a storage solution that has native integration into existing Google Cloud services, including Google Kubernetes Engine (GKE), Cloud Run, VPC Service Controls, and Identity and Access Management (IAM). What should you do?
+    - A. Use Docker to configure a Cloud Storage driver pointed at the bucket owned by your organization.
+    - B. Configure an open source container registry server to run in GKE with a restrictive role-based access control (RBAC) configuration.
+    - C. Configure Artifact Registry as an OCI-based container registry for both Helm charts and container images.
+    - D. Configure Container Registry as an OCI-based container registry for container images.
+
+    **C**. The newer Artifact registry can hold all the build artifacts and dependencies, including docker image and helm charts. Container registry do not support helm and is deprecated. 
+
+167. You need to define SLOs for a high-traffic web application. Customers are currently happy with the application performance and availability. Based on current measurement, the 90th percentile of latency is 160 ms and the 95th percentile of latency is 300 ms over a 28-day window. What latency SLO should you publish?
+    - A. 90th percentile - 150 ms, 95th percentile - 290 ms
+    - B. 90th percentile - 160 ms, 95th percentile - 300 ms
+    - C. 90th percentile - 190 ms, 95th percentile - 330 ms
+    - D. 90th percentile - 300 ms, 95th percentile - 450 ms
+
+    **C**. SLO should be slightly less strict than the current measurement to leave some room for error budget. SLA will be again, slightly less strict than SLO
+
+169. Your company runs services on Google Cloud. Each team runs their applications in a dedicated project. New teams and projects are created regularly. Your security team requires that all logs are processed by a security information and event management (SIEM) system. The SIEM ingests logs by using Pub/Sub. You must ensure that all existing and future logs are scanned by the SIEM. What should you do?
+     - A. Create an organization-level aggregated sink with a siem log bucket as the destination. Set an inclusion filter to include all logs.
+     - B. Create a folder-level aggregated sink with a siem Pub/Sub topic as the destination. Set an inclusion filter to include all logs. Repeat for each folder.
+     - C. Create an organization-level aggregated sink with a siem Pub/Sub topic as the destination. Set an inclusion filter to include all logs.
+     - D. Create a project-level logging sink with a siem Pub/Sub topic as the destination. Set an inclusion filter to include all logs. Repeat for each project.
+
+    **C**. To export all logs to one destination, create one aggregated sink at organization level. Because use Pub/Sub to send to external system, use Pub/Sub as destination. Include all logs. 
+
+173. Your company stores a large volume of infrequently used data in Cloud Storage. The projects in your company's CustomerService folder access Cloud Storage frequently, but store very little data. You want to enable Data Access audit logging across the company to identify data usage patterns. You need to exclude the CustomerService folder projects from Data Access audit logging. What should you do?
+     - A. Enable Data Access audit logging for Cloud Storage at the organization level, and configure exempted principals to include users of the CustomerService folder.
+     - B. Enable Data Access audit logging for Cloud Storage at the organization level, with no additional configuration.
+     - C. Enable Data Access audit logging for Cloud Storage for all projects and folders other than the CustomerService folder.
+     - D. Enable Data Access audit logging for Cloud Storage for all projects and folders, and configure exempted principals to include users of the CustomerService folder.
+
+    **A**. Because data access log is widely needed across the entire organization, you can enable it at the organization. You do not want to have Data Access log in a specific folder. However, you cannot disabled data access log that is enabled at its parent. https://cloud.google.com/logging/docs/audit/configure-data-access#project-and-organization So what to do? Instead you use **Exempted principals** https://cloud.google.com/logging/docs/audit/configure-data-access#configuration_overview and add project users. What that means is in that folder, data access log is enabled but no user activity will be record, so the log is emtpy. 
+
+174. You have an application running in production on Cloud Run. Your team recently finished developing a new version (revision B) of the application. You want to test the new revision on 10% of your clients by using the least amount of effort. What should you do?
+     - A. Deploy the new revision to the existing service without traffic allocated. Tag the revision and share the URL with 10% of your clients.
+     - B. Create a new service, and deploy the new revisions on the new service. Deploy a new revision of the old application where the application routes a percentage of the traffic to the new service.
+     - C. Create a new service, and deploy the new revision on that new service. Create a load balancer to split the traffic between the old service and the new service.
+     - D. Deploy the new revision to the existing service without traffic allocated. Split the traffic between the old revision and the new revision.
+
+    **D**. To have a 90/10 traffic split, the easiest way is to use split traffic between two. If it is tesing with no traffic, a tag can work, or a no-traffic split can also work
