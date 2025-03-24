@@ -1133,32 +1133,30 @@ The Deployment app-green was updated to use the new version of the application. 
 
 120. You have an application that runs in Google Kubernetes Engine (GKE). The application consists of several microservices that are deployed to GKE by using Deployments and Services. One of the microservices is experiencing an issue where a Pod returns 403 errors after the Pod has been running for more than five hours. Your development team is working on a solution, but the issue will not be resolved for a month. You need to ensure continued operations until the microservice is fixed. You want to follow Google-recommended practices and use the fewest number of steps. What should you do?
 
+- A. Create a cron job to terminate any Pods that have been running for more than five hours.
+- B. Add a HTTP liveness probe to the microservice's deployment.
+- C. Monitor the Pods, and terminate any Pods that have been running for more than five hours.
+- D. Configure an alert to notify you whenever a Pod returns 403 errors.
 
-    - A. Create a cron job to terminate any Pods that have been running for more than five hours.
-    - B. Add a HTTP liveness probe to the microservice's deployment.
-    - C. Monitor the Pods, and terminate any Pods that have been running for more than five hours.
-    - D. Configure an alert to notify you whenever a Pod returns 403 errors.
-
-    **B**. After 5 hours, the pod has been running but the HTTP return error. Adding HTTP Liveness probe, Kubernetes periodically check the HTTP endpoint. If it fails, **Kubernetes will kill the pod and restart it**. This is the easiest and google recommended way.
+  **B**. After 5 hours, the pod has been running but the HTTP return error. Adding HTTP Liveness probe, Kubernetes periodically check the HTTP endpoint. If it fails, **Kubernetes will kill the pod and restart it**. This is the easiest and google recommended way.
 
 121. You want to share a Cloud Monitoring custom dashboard with a partner team. What should you do?
 
+- A. Provide the partner team with the dashboard URL to enable the partner team to create a copy of the dashboard.
+- B. Export the metrics to BigQuery. Use Looker Studio to create a dashboard, and share the dashboard with the partner team.
+- C. Copy the Monitoring Query Language (MQL) query from the dashboard, and send the ML query to the partner team.
+- D. Download the JSON definition of the dashboard, and send the JSON file to the partner team.
 
-    - A. Provide the partner team with the dashboard URL to enable the partner team to create a copy of the dashboard.
-    - B. Export the metrics to BigQuery. Use Looker Studio to create a dashboard, and share the dashboard with the partner team.
-    - C. Copy the Monitoring Query Language (MQL) query from the dashboard, and send the ML query to the partner team.
-    - D. Download the JSON definition of the dashboard, and send the JSON file to the partner team.
-
-    **A**. To share monitoring dashboard, google recommend use Monitoring to send the URL of a dashboard to your recipients. https://cloud.google.com/monitoring/charts/share-dashboards If you want to share the definition (Strucuture) instead of the actual info, using JSON.
+  **A**. To share monitoring dashboard, google recommend use Monitoring to send the URL of a dashboard to your recipients. https://cloud.google.com/monitoring/charts/share-dashboards If you want to share the definition (Strucuture) instead of the actual info, using JSON.
 
 122. You are building an application that runs on Cloud Run. The application needs to access a third-party API by using an API key. You need to determine a secure way to store and use the API key in your application by following Google-recommended practices. What should you do?
 
-     - A. Save the API key in Secret Manager as a secret. Reference the secret as an environment variable in the Cloud Run application.
-     - B. Save the API key in Secret Manager as a secret key. Mount the secret key under the /sys/api_key directory, and decrypt the key in the Cloud Run application.
-     - C. Save the API key in Cloud Key Management Service (Cloud KMS) as a key. Reference the key as an environment variable in the Cloud Run application.
-     - D. Encrypt the API key by using Cloud Key Management Service (Cloud KMS), and pass the key to Cloud Run as an environment variable. Decrypt and use the key in Cloud Run.
+- A. Save the API key in Secret Manager as a secret. Reference the secret as an environment variable in the Cloud Run application.
+- B. Save the API key in Secret Manager as a secret key. Mount the secret key under the /sys/api_key directory, and decrypt the key in the Cloud Run application.
+- C. Save the API key in Cloud Key Management Service (Cloud KMS) as a key. Reference the key as an environment variable in the Cloud Run application.
+- D. Encrypt the API key by using Cloud Key Management Service (Cloud KMS), and pass the key to Cloud Run as an environment variable. Decrypt and use the key in Cloud Run.
 
-     **A**. Google recommend to use secret manager to store API key for cloud run. https://cloud.google.com/run/docs/configuring/services/secrets#access-secrets:~:text=Pass%20a%20secret%20using%20environment%20variables.%20Environment%20variables%20are%20resolved%20at%20instance%20startu. The key difference between Secret Manager and KMS. Secret Manager is used to store credentials, password, API key for authentication and authoriztion. KMS do encryption only, therefore not for crendential but other such as data in database, eg: SIN number.
+  **A**. Google recommend to use secret manager to store API key for cloud run. https://cloud.google.com/run/docs/configuring/services/secrets#access-secrets:~:text=Pass%20a%20secret%20using%20environment%20variables.%20Environment%20variables%20are%20resolved%20at%20instance%20startu. The key difference between Secret Manager and KMS. Secret Manager is used to store credentials, password, API key for authentication and authoriztion. KMS do encryption only, therefore not for crendential but other such as data in database, eg: SIN number.
 
 123. You are currently planning how to display Cloud Monitoring metrics for your organization’s Google Cloud projects. Your organization has three folders and six projects:
 
@@ -1170,42 +1168,39 @@ The Deployment app-green was updated to use the new version of the application. 
 
 You want to configure Cloud Monitoring dashboards to only display metrics from the projects within one folder. You need to ensure that the dashboards do not display metrics from projects in the other folders. You want to follow Google-recommended practices. What should you do?
 
-     - A. Create a single new scoping project.
-     - B. Create new scoping projects for each folder.
-     - C. Use the current app-one-prod project as the scoping project.
-     - D. Use the current app-one-dev, app-one-staging, and app-one-prod projects as the scoping project for each folder.
-
-    **B**. You want to organize mertics by folders (environment) therefore totally we need 3 monitoring dashboard. With each folder, two projects are for actual work so they are not suitable to host metrics from another project. Therefore create new scoping projects for each folder.
+- A. Create a single new scoping project.
+- B. Create new scoping projects for each folder.
+- C. Use the current app-one-prod project as the scoping project.
+- D. Use the current app-one-dev, app-one-staging, and app-one-prod projects as the scoping project for each folder.
+  **B**. You want to organize mertics by folders (environment) therefore totally we need 3 monitoring dashboard. With each folder, two projects are for actual work so they are not suitable to host metrics from another project. Therefore create new scoping projects for each folder.
 
 124. Your company’s security team needs to have read-only access to Data Access audit logs in the \_Required bucket. You want to provide your security team with the necessary permissions following the principle of least privilege and Google-recommended practices. What should you do?
 
+- A. Assign the roles/logging.viewer role to each member of the security team.
+- B. Assign the roles/logging.viewer role to a group with all the security team members.
+- C. Assign the roles/logging.privateLogViewer role to each member of the security team.
+- D. Assign the roles/logging.privateLogViewer role to a group with all the security team members.
 
-    - A. Assign the roles/logging.viewer role to each member of the security team.
-    - B. Assign the roles/logging.viewer role to a group with all the security team members.
-    - C. Assign the roles/logging.privateLogViewer role to each member of the security team.
-    - D. Assign the roles/logging.privateLogViewer role to a group with all the security team members.
-
-    **D**. Data Access Log is private log and need specific `privateLogViewer` role. You should assign user to groups with role, not assign permission to user. https://cloud.google.com/logging/docs/audit#roles.
+  **D**. Data Access Log is private log and need specific `privateLogViewer` role. You should assign user to groups with role, not assign permission to user. https://cloud.google.com/logging/docs/audit#roles.
 
 125. Your team is building a service that performs compute-heavy processing on batches of data. The data is processed faster based on the speed and number of CPUs on the machine. These batches of **data vary** in size and **may arrive at any time** from multiple third-party sources. You need to ensure that third parties are able to upload their data securely. You want to minimize costs, while ensuring that the data is processed as quickly as possible. What should you do?
 
-     - A. Provide a secure file transfer protocol (SFTP) server on a Compute Engine instance so that third parties can upload batches of data, and provide appropriate credentials to the server. Create a Cloud Function with a google.storage.object.finalize Cloud Storage trigger. Write code so that the function can scale up a Compute Engine autoscaling managed instance group. Use an image pre-loaded with the data processing software that terminates the instances when processing completes.
-     - B. Provide a Cloud Storage bucket so that third parties can upload batches of data, and provide appropriate Identity and Access Management (IAM) access to the bucket. Use a standard Google Kubernetes Engine (GKE) cluster and maintain two services: one that processes the batches of data, and one that monitors Cloud Storage for new batches of data. Stop the processing service when there are no batches of data to process.
-     - C. Provide a Cloud Storage bucket so that third parties can upload batches of data, and provide appropriate Identity and Access Management (IAM) access to the bucket. Create a Cloud Function with a google.storage.object.finalize Cloud Storage trigger. Write code so that the function can scale up a Compute Engine autoscaling managed instance group. Use an image pre-loaded with the data processing software that terminates the instances when processing completes.
-     - D. Provide a Cloud Storage bucket so that third parties can upload batches of data, and provide appropriate Identity and Access Management (IAM) access to the bucket. Use Cloud Monitoring to detect new batches of data in the bucket and trigger a Cloud Function that processes the data. Set a Cloud Function to use the largest CPU possible to minimize the runtime of the processing.
+- A. Provide a secure file transfer protocol (SFTP) server on a Compute Engine instance so that third parties can upload batches of data, and provide appropriate credentials to the server. Create a Cloud Function with a google.storage.object.finalize Cloud Storage trigger. Write code so that the function can scale up a Compute Engine autoscaling managed instance group. Use an image pre-loaded with the data processing software that terminates the instances when processing completes.
+- B. Provide a Cloud Storage bucket so that third parties can upload batches of data, and provide appropriate Identity and Access Management (IAM) access to the bucket. Use a standard Google Kubernetes Engine (GKE) cluster and maintain two services: one that processes the batches of data, and one that monitors Cloud Storage for new batches of data. Stop the processing service when there are no batches of data to process.
+- C. Provide a Cloud Storage bucket so that third parties can upload batches of data, and provide appropriate Identity and Access Management (IAM) access to the bucket. Create a Cloud Function with a google.storage.object.finalize Cloud Storage trigger. Write code so that the function can scale up a Compute Engine autoscaling managed instance group. Use an image pre-loaded with the data processing software that terminates the instances when processing completes.
+- D. Provide a Cloud Storage bucket so that third parties can upload batches of data, and provide appropriate Identity and Access Management (IAM) access to the bucket. Use Cloud Monitoring to detect new batches of data in the bucket and trigger a Cloud Function that processes the data. Set a Cloud Function to use the largest CPU possible to minimize the runtime of the processing.
 
-     **C**. Because the data can come at any time, we need somthing that and scale up and down automatically and potentially scale down to 0. Cloud function is a good choice compared to GKE with fixed 2 cluster. Then this is a batch process so providing a cloud storage for user to upload data is a good choice. Then the cloud function can access the bucket and process data. To do this, we need to give user correct cloud storage IAM permission. The cloud function is `storage.object.finalize` where an object is being upload successfully.
+  **C**. Because the data can come at any time, we need somthing that and scale up and down automatically and potentially scale down to 0. Cloud function is a good choice compared to GKE with fixed 2 cluster. Then this is a batch process so providing a cloud storage for user to upload data is a good choice. Then the cloud function can access the bucket and process data. To do this, we need to give user correct cloud storage IAM permission. The cloud function is `storage.object.finalize` where an object is being upload successfully.
 
 126. You are reviewing your deployment pipeline in Google Cloud Deploy. You must reduce toil in the pipeline, and you want to minimize the amount of time it takes to complete an end-to-end deployment. What should you do? (Choose two.)
 
+- A. Create a trigger to notify the required team to complete the next step when manual intervention is required.
+- B. Divide the automation steps into smaller tasks.
+- C. Use a script to automate the creation of the deployment pipeline in Google Cloud Deploy.
+- D. Add more engineers to finish the manual steps.
+- E. Automate promotion approvals from the development environment to the test environment.
 
-    - A. Create a trigger to notify the required team to complete the next step when manual intervention is required.
-    - B. Divide the automation steps into smaller tasks.
-    - C. Use a script to automate the creation of the deployment pipeline in Google Cloud Deploy.
-    - D. Add more engineers to finish the manual steps.
-    - E. Automate promotion approvals from the development environment to the test environment.
-
-    **BE**. B. Divide steps into smaller task can have better flexibility. If one step fail, it can be fast to ping-point to diagnose. It also can potential run parallel to increase the speed, such as building multiple microservices at the same time. E Promotion from dev to testing usually can be automated because it doesn't have impact on prod, such as promote when test pass.
+  **BE**. B. Divide steps into smaller task can have better flexibility. If one step fail, it can be fast to ping-point to diagnose. It also can potential run parallel to increase the speed, such as building multiple microservices at the same time. E Promotion from dev to testing usually can be automated because it doesn't have impact on prod, such as promote when test pass.
 
 127. You work for a global organization and are running a monolithic application on Compute Engine. You need to select the machine type for the application to use that optimizes CPU utilization by using the fewest number of steps. You want to use historical system metrics to identify the machine type for the application to use. You want to follow Google-recommended practices. What should you do?
 
