@@ -317,6 +317,8 @@
     - D. GKE health checks for your application servers.
     - E. A synthetic client that periodically sends simulated user requests.
 
+    **BE**. B Measuring availability from the actual end-user's perspective ensures that issues with the CDN, Cloud Load Balancer (CLB), or other networking components are captured. E stimulate a real user
+
 31. Your team is designing a new application for deployment into Google Kubernetes Engine (GKE). You need to set up monitoring to collect and aggregate various application-level metrics in a centralized location. You want to use Google Cloud Platform services while minimizing the amount of work required to set up monitoring. What should you do?
 
     - A. Publish various metrics from the application directly to the Cloud Monitoring API, and then observe these custom metrics in Cloud monitoring.
@@ -847,6 +849,8 @@
     - C. Deploy the new version of the service to the staging environment with a new-release tag without serving traffic. Test the new-release version. If the test passes, gradually roll out this tagged version. Repeat for the production environment.
     - D. Deploy a new environment with the green tag to use as the staging environment. Deploy the new version of the service to the green environment and test the new version. If the tests pass, send all traffic to the green environment and delete the existing staging environment. Repeat for the production environment.
 
+    **C**. Tagged release will create a new URL, allow testing in real environment but can have no traffic.
+
 91. You work for a global organization and run a service with an availability target of 99% with limited engineering resources. For the current calendar month, you noticed that the service has 99.5% availability. You must ensure that your service meets the defined availability goals and can react to business changes, including the upcoming launch of new features. You also need to reduce technical debt while minimizing operational costs. You want to follow Google-recommended practices. What should you do?
 
     - A. Add N+1 redundancy to your service by adding additional compute resources to the service.
@@ -951,6 +955,8 @@ customers. What should you do? - A. Decrease the acknowledgment deadline on the 
 - B. Install the Ops Agent on the Compute Engine instances.
 - C. Enable logging on the firewall rule.
 - D. Enable VPC Flow Logs on the subnet.
+
+  **C**. Both firewall rule log and VPC flow logs include IP address. But VPC Flow log also include infromation of subnet, too much. Here 0.0.0.0/0 firewall already include all IP
 
 102. Your company runs an ecommerce website built with JVM-based applications and microservice architecture in Google Kubernetes Engine (GKE). The application load increases during the day and decreases during the night. Your operations team has configured the application to run enough Pods to handle the evening peak load. You want to automate scaling by only running enough Pods and nodes for the load. What should you do?
 
@@ -1248,16 +1254,14 @@ You want to configure Cloud Monitoring dashboards to only display metrics from t
 
      **C**. Logs need to be centralized in one project, but project team only access their logs. This is a perfect use case for `log view`, which let you grant a user access to only a subset of the log entries stored in a log bucket. For operation teams they need to access all logs. Cloud logging bucket automatically has a `_AllLogs` view that can be used by operation teams. https://cloud.google.com/logging/docs/routing/overview#log-views
 
-132. Your company uses Jenkins running on Google Cloud VM instances for CI/CD. You need to extend the functionality to use infrastructure as code automation by using Terraform. You must ensure that the Terraform Jenkins instance is authorized to create Google Cloud resources.
-     You want to follow Google-recommended practices. What should you do?
+132. Your company uses Jenkins running on Google Cloud VM instances for CI/CD. You need to extend the functionality to use infrastructure as code automation by using Terraform. You must ensure that the Terraform Jenkins instance is authorized to create Google Cloud resources. You want to follow Google-recommended practices. What should you do?
 
+- A. Confirm that the Jenkins VM instance has an attached service account with the appropriate Identity and Access Management (IAM) permissions.
+- B. Use the Terraform module so that Secret Manager can retrieve credentials.
+- C. Create a dedicated service account for the Terraform instance. Download and copy the secret key value to the GOOGLE_CREDENTIALS environment variable on the Jenkins server.
+- D. Add the gcloud auth application-default login command as a step in Jenkins before running the Terraform commands.
 
-    - A. Confirm that the Jenkins VM instance has an attached service account with the appropriate Identity and Access Management (IAM) permissions.
-    - B. Use the Terraform module so that Secret Manager can retrieve credentials.
-    - C. Create a dedicated service account for the Terraform instance. Download and copy the secret key value to the GOOGLE_CREDENTIALS environment variable on the Jenkins server.
-    - D. Add the gcloud auth application-default login command as a step in Jenkins before running the Terraform commands.
-
-    **A**. 1. You want to use a Service Account 2. The service account need the correct access. On top of these two, you can config the Terraform instance to use that service account. There is no need to (C) create another service account, and even to copy the key. https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#running-terraform-on-google-cloud
+  **A**. 1. You want to use a Service Account 2. The service account need the correct access. On top of these two, you can config the Terraform instance to use that service account. There is no need to (C) create another service account, and even to copy the key. https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#running-terraform-on-google-cloud
 
 133. You encounter a large number of outages in the production systems you support. You receive alerts for all the outages, the alerts are due to unhealthy systems that are automatically restarted within a minute. You want to set up a process that would prevent staff burnout while following Site Reliability Engineering (SRE) practices. What should you do?
 
@@ -1270,23 +1274,21 @@ You want to configure Cloud Monitoring dashboards to only display metrics from t
 
 134. As part of your company's initiative to shift left on security, the InfoSec team is asking all teams to implement guard rails on all the Google Kubernetes Engine (GKE) clusters to only allow the deployment of trusted and approved images. You need to determine how to satisfy the InfoSec team's goal of shifting left on security. What should you do?
 
+- A. Enable Container Analysis in Artifact Registry, and check for common vulnerabilities and exposures (CVEs) in your container images
+- B. Use Binary Authorization to attest images during your CI/CD pipeline
+- C. Configure Identity and Access Management (IAM) policies to create a least privilege model on your GKE clusters.
+- D. Deploy Falco or Twistlock on GKE to monitor for vulnerabilities on your running Pods
 
-    - A. Enable Container Analysis in Artifact Registry, and check for common vulnerabilities and exposures (CVEs) in your container images
-    - B. Use Binary Authorization to attest images during your CI/CD pipeline
-    - C. Configure Identity and Access Management (IAM) policies to create a least privilege model on your GKE clusters.
-    - D. Deploy Falco or Twistlock on GKE to monitor for vulnerabilities on your running Pods
-
-    **B**. Duplicate with #119.
+  **B**. Duplicate with #119.
 
 135. Your company operates in a highly regulated domain. Your security team requires that only trusted container images can be deployed to Google Kubernetes Engine (GKE). You need to implement a solution that meets the requirements of the security team while minimizing management overhead. What should you do?
 
+- A. Configure Binary Authorization in your GKE clusters to enforce deploy-time security policies.
+- B. Grant the roles/artifactregistry.writer role to the Cloud Build service account. Confirm that no employee has Artifact Registry write permission.
+- C. Use Cloud Run to write and deploy a custom validator. Enable an Eventarc trigger to perform validations when new images are uploaded.
+- D. Configure Kritis to run in your GKE clusters to enforce deploy-time security policies.
 
-    - A. Configure Binary Authorization in your GKE clusters to enforce deploy-time security policies.
-    - B. Grant the roles/artifactregistry.writer role to the Cloud Build service account. Confirm that no employee has Artifact Registry write permission.
-    - C. Use Cloud Run to write and deploy a custom validator. Enable an Eventarc trigger to perform validations when new images are uploaded.
-    - D. Configure Kritis to run in your GKE clusters to enforce deploy-time security policies.
-
-    **A**. Same concept ast #119 and #137
+  **A**. Same concept ast #119 and #137
 
 136. Your CTO has asked you to implement a postmortem policy on every incident for internal use. You want to define what a good postmortem is to ensure that the policy is successful at your company. What should you do? (Choose two.)
 
@@ -1309,32 +1311,30 @@ You want to configure Cloud Monitoring dashboards to only display metrics from t
 
 138. Your company processes IoT data at scale by using Pub/Sub, App Engine standard environment, and an application written in Go. You noticed that the performance inconsistently degrades at peak load. You could not reproduce this issue on your workstation. You need to continuously monitor the application in production to identify slow paths in the code. You want to minimize performance impact and management overhead. What should you do?
 
+- A. Use Cloud Monitoring to assess the App Engine CPU utilization metric.
+- B. Install a continuous profiling tool into Compute Engine. Configure the application to send profiling data to the tool.
+- C. Periodically run the go tool pprof command against the application instance. Analyze the results by using flame graphs.
+- D. Configure Cloud Profiler, and initialize the cloud.google.com/go/profiler library in the application.
 
-    - A. Use Cloud Monitoring to assess the App Engine CPU utilization metric.
-    - B. Install a continuous profiling tool into Compute Engine. Configure the application to send profiling data to the tool.
-    - C. Periodically run the go tool pprof command against the application instance. Analyze the results by using flame graphs.
-    - D. Configure Cloud Profiler, and initialize the cloud.google.com/go/profiler library in the application.
+  **D**. Cloud profiler is like an engineer look at the bottle neck at the code level. It fits well here as it need to identify the slow path in code but cannot trigger the issue at workstation.
 
-    **D**. Cloud profiler is like an engineering look at the bottle neck at the code level. It fits well here as it need to identify the slow path in code but cannot trigger the issue at workstation.
-
-139. Your company runs services by using Google Kubernetes Engine (GKE). The GKE dusters in the development environment run applications with verbose logging enabled. Developers view logs by using the kubectl logs command and do not use Cloud Logging. Applications do not have a uniform logging structure defined. You need to minimize the costs associated with application logging while still collecting GKE operational logs. What should you do?
+139. Your company runs services by using Google Kubernetes Engine (GKE). The GKE clusters in the development environment run applications with verbose logging enabled. Developers view logs by using the kubectl logs command and do not use Cloud Logging. Applications do not have a uniform logging structure defined. You need to minimize the costs associated with application logging while still collecting GKE operational logs. What should you do?
 
      - A. Run the gcloud container clusters update --logging=SYSTEM command for the development cluster.
      - B. Run the gcloud container clusters update --logging=WORKLOAD command for the development cluster.
      - C. Run the gcloud logging sinks update \_Default --disabled command in the project associated with the development environment.
      - D. Add the severity >= DEBUG resource.type = "k8s_container" exclusion filter to the \_Default logging sink in the project associated with the development environment.
 
-     **D**. This question basically asked "I don't use cloud logging for GKE, how to minize the cost". So the solution is to reduce the amount of logs volumne goes to gloud logging. ??
+     **A**. This question basically asked "I don't use cloud logging for GKE, how to minize the cost". So the solution is to reduce the amount of logs volumne goes to gloud logging. GKE log collect audit log, system log and application/workload logs. You want to minimze the unnecessary log, so only system log goes to cloud logging.
 
 140. You have deployed a fleet of Compute Engine instances in Google Cloud. You need to ensure that monitoring metrics and logs for the instances are visible in Cloud Logging and Cloud Monitoring by your company's operations and cyber security teams. You need to grant the required roles for the Compute Engine service account by using Identity and Access Management (IAM) while following the principle of least privilege. What should you do?
 
+- A. Grant the logging.logWriter and monitoring.metricWriter roles to the Compute Engine service accounts.
+- B. Grant the logging.admin and monitoring.editor roles to the Compute Engine service accounts.
+- C. Grant the logging.editor and monitoring.metricWriter roles to the Compute Engine service accounts.
+- D. Grant the logging.logWriter and monitoring.editor roles to the Compute Engine service accounts.
 
-    - A. Grant the logging.logWriter and monitoring.metricWriter roles to the Compute Engine service accounts.
-    - B. Grant the logging.admin and monitoring.editor roles to the Compute Engine service accounts.
-    - C. Grant the logging.editor and monitoring.metricWriter roles to the Compute Engine service accounts.
-    - D. Grant the logging.logWriter and monitoring.editor roles to the Compute Engine service accounts.
-
-    **A**. roles writer < editor < admin. Service Account only needs to write to metric and logging. No need to grant editor or admin role.
+  **A**. roles writer < editor < admin. Service Account only needs to write to metric and logging. No need to grant editor or admin role.
 
 141. You are the Site Reliability Engineer responsible for managing your company's data services and products. You regularly navigate operational challenges, such as unpredictable data volume and high cost, with your company's data ingestion processes. You recently learned that a new data ingestion product will be developed in Google Cloud. You need to collaborate with the product development team to provide operational input on the new product. What should you do?
 
@@ -1412,13 +1412,12 @@ You want to configure Cloud Monitoring dashboards to only display metrics from t
 
 149. You are configuring your CI/CD pipeline natively on Google Cloud. You want builds in a pre-production Google Kubernetes Engine (GKE) environment to be automatically load-tested before being promoted to the production GKE environment. You need to ensure that only builds that have passed this test are deployed to production. You want to follow Google-recommended practices. How should you configure this pipeline with Binary Authorization?
 
+- A. Create an attestation for the builds that pass the load test by requiring the lead quality assurance engineer to sign the attestation by using their personal private key.
+- B. Create an attestation for the builds that pass the load test by using a private key stored in Cloud Key Management Service (Cloud KMS) with a service account JSON key stored as a Kubernetes Secret.
+- C. Create an attestation for the builds that pass the load test by using a private key stored in Cloud Key Management Service (Cloud KMS) authenticated through Workload Identity.
+- D. Create an attestation for the builds that pass the load test by requiring the lead quality assurance engineer to sign the attestation by using a key stored in Cloud Key Management Service (Cloud KMS).
 
-    - A. Create an attestation for the builds that pass the load test by requiring the lead quality assurance engineer to sign the attestation by using their personal private key.
-     - B. Create an attestation for the builds that pass the load test by using a private key stored in Cloud Key Management Service (Cloud KMS) with a service account JSON key stored as a Kubernetes Secret.
-     - C. Create an attestation for the builds that pass the load test by using a private key stored in Cloud Key Management Service (Cloud KMS) authenticated through Workload Identity.
-     - D. Create an attestation for the builds that pass the load test by requiring the lead quality assurance engineer to sign the attestation by using a key stored in Cloud Key Management Service (Cloud KMS).
-
-    **C**. The key is how to test the workload with automation since all options mention attestation. A and D are manual intervention. B and C both work but for Kubernetes, google recommend to use Workload Identity. It associate a Google Service account with Kubernete service account and authenticate without JSON key.
+  **C**. The key is how to test the workload with automation since all options mention attestation. A and D are manual intervention. B and C both work but for Kubernetes, google recommend to use Workload Identity. It associate a Google Service account with Kubernete service account and authenticate without JSON key.
 
 150. You are deploying an application to Cloud Run. The application requires a password to start. Your organization requires that all passwords are rotated every 24 hours, and your application must have the latest password. You need to deploy the application with no downtime. What should you do?
 
@@ -1555,34 +1554,31 @@ You want to configure Cloud Monitoring dashboards to only display metrics from t
 
 165. You are monitoring a service that uses n2-standard-2 Compute Engine instances that serve large files. Users have reported that downloads are slow. Your Cloud Monitoring dashboard shows that your VMs are running at peak network throughput. You want to improve the network throughput performance. What should you do?
 
+- A. Add additional network interface controllers (NICs) to your VMs.
+- B. Deploy a Cloud NAT gateway and attach the gateway to the subnet of the VMs.
+- C. Change the machine type for your VMs to n2-standard-8.
+- D. Deploy the Ops Agent to export additional monitoring metrics.
 
-    - A. Add additional network interface controllers (NICs) to your VMs.
-    - B. Deploy a Cloud NAT gateway and attach the gateway to the subnet of the VMs.
-    - C. Change the machine type for your VMs to n2-standard-8.
-    - D. Deploy the Ops Agent to export additional monitoring metrics.
-
-    **C**. *Download slow* talks about egress bandwidth. Note that instance machine type defines its max possible egress rate. Add virtual networks interfaces or additional IP address will not change the bandwith. https://cloud.google.com/compute/docs/network-bandwidth#vm-out-baseline:~:text=Neither%20additional%20virtual,bandwidth%20per%20vNIC And therefore A B are wrong. D is irrelavent. Why C works? according https://cloud.google.com/compute/docs/general-purpose-machines#n2-standard, change from `-2` to `-8` will increase from 10 to 16Gbps.
-    NIC allows VM to connect to VPC. Multiple NIC allow one instance to connect to multiple VPC, common use like Firewall, traffic spliting or load balancing. Cloud NAT (network address translation) typlicall use to allow private resource to access public internet without exposing IP address.
+  **C**. _Download slow_ talks about egress bandwidth. Note that instance machine type defines its max possible egress rate. Add virtual networks interfaces or additional IP address will not change the bandwith. https://cloud.google.com/compute/docs/network-bandwidth#vm-out-baseline:~:text=Neither%20additional%20virtual,bandwidth%20per%20vNIC And therefore A B are wrong. D is irrelavent. Why C works? according https://cloud.google.com/compute/docs/general-purpose-machines#n2-standard, change from `-2` to `-8` will increase from 10 to 16Gbps.
+  NIC allows VM to connect to VPC. Multiple NIC allow one instance to connect to multiple VPC, common use like Firewall, traffic spliting or load balancing. Cloud NAT (network address translation) typlicall use to allow private resource to access public internet without exposing IP address.
 
 166. Your organization is starting to containerize with Google Cloud. You need a fully managed storage solution for container images and Helm charts. You need to identify a storage solution that has native integration into existing Google Cloud services, including Google Kubernetes Engine (GKE), Cloud Run, VPC Service Controls, and Identity and Access Management (IAM). What should you do?
 
+- A. Use Docker to configure a Cloud Storage driver pointed at the bucket owned by your organization.
+- B. Configure an open source container registry server to run in GKE with a restrictive role-based access control (RBAC) configuration.
+- C. Configure Artifact Registry as an OCI-based container registry for both Helm charts and container images.
+- D. Configure Container Registry as an OCI-based container registry for container images.
 
-    - A. Use Docker to configure a Cloud Storage driver pointed at the bucket owned by your organization.
-    - B. Configure an open source container registry server to run in GKE with a restrictive role-based access control (RBAC) configuration.
-    - C. Configure Artifact Registry as an OCI-based container registry for both Helm charts and container images.
-    - D. Configure Container Registry as an OCI-based container registry for container images.
-
-    **C**. The newer Artifact registry can hold all the build artifacts and dependencies, including docker image and helm charts. Container registry do not support helm and is deprecated.
+  **C**. The newer Artifact registry can hold all the build artifacts and dependencies, including docker image and helm charts. Container registry do not support helm and is deprecated.
 
 167. You need to define SLOs for a high-traffic web application. Customers are currently happy with the application performance and availability. Based on current measurement, the 90th percentile of latency is 160 ms and the 95th percentile of latency is 300 ms over a 28-day window. What latency SLO should you publish?
 
+- A. 90th percentile - 150 ms, 95th percentile - 290 ms
+- B. 90th percentile - 160 ms, 95th percentile - 300 ms
+- C. 90th percentile - 190 ms, 95th percentile - 330 ms
+- D. 90th percentile - 300 ms, 95th percentile - 450 ms
 
-    - A. 90th percentile - 150 ms, 95th percentile - 290 ms
-    - B. 90th percentile - 160 ms, 95th percentile - 300 ms
-    - C. 90th percentile - 190 ms, 95th percentile - 330 ms
-    - D. 90th percentile - 300 ms, 95th percentile - 450 ms
-
-    **C**. SLO should be slightly less strict than the current measurement to leave some room for error budget. SLA will be again, slightly less strict than SLO
+  **C**. SLO should be slightly less strict than the current measurement to leave some room for error budget. SLA will be again, slightly less strict than SLO
 
 169. Your company runs services on Google Cloud. Each team runs their applications in a dedicated project. New teams and projects are created regularly. Your security team requires that all logs are processed by a security information and event management (SIEM) system. The SIEM ingests logs by using Pub/Sub. You must ensure that all existing and future logs are scanned by the SIEM. What should you do?
 
